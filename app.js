@@ -6,7 +6,7 @@
 // ==========================================
 
 // IMPORTANT: Replace this with your actual Render URL.
-const API = "https://YOUR-ACTUAL-RENDER-URL.onrender.com/api";
+const API = "https://dashboardsystemjed.onrender.com/api";
 
 const COURSE_LIST = [
   "BS Information Technology",
