@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100b1d">
+  <meta name="description" content="Neon StudentHub - Student Management Dashboard">
+  <title>StudentHub | Student Management</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="app.js?v=5"></script>  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a class="brand" href="#">
+        <span class="brand-mark">✦</span>
+        <span>Neon<span class="brand-accent">Hub</span></span>
+      </a>
+
+      <div class="side-label">MENU</div>
+
+      <nav class="nav-links">
+        <a class="nav-link active" href="#overview">▦ Overview</a>
+        <a class="nav-link" href="#students">♙ Students</a>
+        <a class="nav-link" href="#analytics">◉ Analytics</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="side-glow-card">
+          <span class="sparkle">✧</span>
+          <strong>StudentHub</strong>
+          <p>Manage your student community in one place.</p>
+        </div>
+
+        <div class="admin-mini">
+          <div class="admin-avatar">A</div>
+          <div>
+            <strong>Administrator</strong>
+            <small>Dashboard access</small>
+          </div>
+          <span class="online-dot"></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">STUDENT MANAGEMENT SYSTEM</div>
+          <h1>Dashboard <span class="heading-spark">✦</span></h1>
+          <p class="subheading">Your student community, all in one view.</p>
+        </div>
+
+        <button class="btn btn-primary" id="addStudentBtn" type="button">
+          ＋ Add Student
+        </button>
+      </header>
+
+      <!-- OVERVIEW -->
+      <section id="overview">
+        <div class="section-heading">
+          <div>
+            <h2>Overview</h2>
+            <p>Here's what's happening with your students.</p>
+          </div>
+          <span class="live-pill"><i></i> LIVE DATA</span>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card stat-pink">
+            <div class="stat-top">
+              <span>Total Students</span><span class="stat-icon">♙</span>
+            </div>
+            <div class="stat-number" id="totalStudents">0</div>
+            <div class="stat-foot">Registered students</div>
+            <div class="stat-orb"></div>
+          </article>
+
+          <article class="stat-card stat-purple">
+            <div class="stat-top">
+              <span>Active Students</span><span class="stat-icon">✦</span>
+            </div>
+            <div class="stat-number" id="activeStudents">0</div>
+            <div class="stat-foot">Currently active</div>
+            <div class="stat-orb"></div>
+          </article>
+
+          <article class="stat-card stat-muted">
+            <div class="stat-top">
+              <span>Inactive Students</span><span class="stat-icon">◷</span>
+            </div>
+            <div class="stat-number" id="inactiveStudents">0</div>
+            <div class="stat-foot">Currently inactive</div>
+            <div class="stat-orb"></div>
+          </article>
+
+          <article class="stat-card stat-blue">
+            <div class="stat-top">
+              <span>Female Students</span><span class="stat-icon">♀</span>
+            </div>
+            <div class="stat-number" id="femaleStudents">0</div>
+            <div class="stat-foot">Female population</div>
+            <div class="stat-orb"></div>
+          </article>
+
+          <article class="stat-card stat-cyan">
+            <div class="stat-top">
+              <span>Male Students</span><span class="stat-icon">♂</span>
+            </div>
+            <div class="stat-number" id="maleStudents">0</div>
+            <div class="stat-foot">Male population</div>
+            <div class="stat-orb"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ANALYTICS -->
+      <section id="analytics" class="analytics-section">
+        <div class="section-heading">
+          <div>
+            <h2>Course & Gender Analytics</h2>
+            <p>Student population and gender distribution per course.</p>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <div class="analytics-header">
+            <div>
+              <h3>Population by Course</h3>
+              <p>Each course's share of total student population.</p>
+            </div>
+            <span class="chart-tag">COURSE BREAKDOWN</span>
+          </div>
+
+          <div id="courseAnalytics" class="course-analytics">
+            <div class="empty-state">
+              No student data yet. Add students to see course analytics.
+            </div>
+          </div>
+
+          <div class="legend">
+            <span><i class="legend-female"></i> Female</span>
+            <span><i class="legend-male"></i> Male</span>
+            <span><i class="legend-other"></i> Prefer not to say</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- STUDENT RECORDS -->
+      <section id="students" class="students-section">
+        <div class="section-heading">
+          <div>
+            <h2>Student Records</h2>
+            <p>View and manage all registered students.</p>
+          </div>
+          <span class="record-count" id="recordCount">0 RECORDS</span>
+        </div>
+
+        <div class="table-card">
+          <div class="toolbar">
+            <div class="search-wrap">
+              <span>⌕</span>
+              <input id="searchInput" type="search"
+                placeholder="Search name, email or ID...">
+            </div>
+
+            <select id="courseFilter">
+              <option value="">All Courses</option>
+            </select>
+
+            <select id="genderFilter">
+              <option value="">All Genders</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+
+            <select id="statusFilter">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>STUDENT</th>
+                  <th>COURSE</th>
+                  <th>YEAR</th>
+                  <th>GENDER</th>
+                  <th>STATUS</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+
+              <tbody id="studentTableBody">
+                <tr>
+                  <td colspan="7" class="empty-table">
+                    Loading student records...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <span id="tableSummary">Showing 0 students</span>
+            <span>NEONHUB <b>•</b> STUDENT DATABASE</span>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        © 2026 Neon StudentHub
+        <span>Designed for smarter student management.</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ADD / EDIT MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">STUDENT INFORMATION</div>
+          <h2 id="modalTitle">Add New Student</h2>
+          <p>Fill in the details below to save a student record.</p>
+        </div>
+
+        <button class="close-btn" id="closeModal"
+          type="button" aria-label="Close">×</button>
+      </div>
+
+      <form id="studentForm">
+        <div class="form-grid">
+
+          <label>
+            First Name
+            <input name="first_name" required maxlength="60"
+              placeholder="Enter first name">
+          </label>
+
+          <label>
+            Last Name
+            <input name="last_name" required maxlength="60"
+              placeholder="Enter last name">
+          </label>
+
+          <label class="full">
+            Email Address
+            <input name="email" type="email" required
+              placeholder="student@email.com">
+          </label>
+
+          <label>
+            Contact Number
+            <input name="contact_number" type="tel"
+              placeholder="09XX XXX XXXX">
+          </label>
+
+          <label>
+            Course
+            <select name="course" id="courseSelect" required>
+              <option value="">Select course</option>
+            </select>
+          </label>
+
+          <label>
+            Year Level
+            <select name="year_level" required>
+              <option value="">Select year</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+            </select>
+          </label>
+
+          <label>
+            Gender
+            <select name="gender" required>
+              <option value="">Select gender</option>
+              <option>Female</option>
+              <option>Male</option>
+              <option>Prefer not to say</option>
+            </select>
+          </label>
+
+          <label>
+            Status
+            <select name="status" required>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </label>
+
+        </div>
+
+        <div class="form-error" id="formError" role="alert"></div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelModal">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" id="saveStudentBtn">
+            Save Student
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- CACHE VERSION: INCREASE THIS NUMBER AFTER FRONTEND UPDATES -->
+  <script src="app.js?v=3"></script>
+
+</body>
+</html>
