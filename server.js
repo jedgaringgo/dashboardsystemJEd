@@ -14,33 +14,30 @@ const PORT = process.env.PORT || 3000;
 // ========================================
 
 const allowedOrigins = [
+  "https://jedgaringgo.github.io",
   "http://localhost:5500",
   "http://127.0.0.1:5500",
   "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  ...(process.env.FRONTEND_URL || "")
-    .split(",")
-    .map(origin => origin.trim())
-    .filter(Boolean)
+  "http://127.0.0.1:3000"
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests without an Origin header (such as local tools).
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("Not allowed by CORS"));
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
-  })
-);
+
+    return callback(new Error("Not allowed by CORS: " + origin));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve frontend files when using the same server.
+// Serve frontend files if available
 app.use(express.static(path.join(__dirname, "public")));
 
 // ========================================
@@ -183,6 +180,7 @@ app.get("/api/students", (req, res) => {
 
   } catch (err) {
     console.error("Get students error:", err);
+
     res.status(500).json({
       error: "Unable to retrieve students."
     });
@@ -190,7 +188,7 @@ app.get("/api/students", (req, res) => {
 });
 
 // ========================================
-// DASHBOARD STATISTICS + COURSE ANALYTICS
+// DASHBOARD STATISTICS
 // ========================================
 
 app.get("/api/stats", (req, res) => {
@@ -263,6 +261,7 @@ app.get("/api/stats", (req, res) => {
 
   } catch (err) {
     console.error("Statistics error:", err);
+
     res.status(500).json({
       error: "Unable to retrieve dashboard statistics."
     });
@@ -306,7 +305,7 @@ app.post("/api/students", (req, res) => {
       first_name: req.body.first_name.trim(),
       last_name: req.body.last_name.trim(),
       email: req.body.email.trim().toLowerCase(),
-      contact_number: (req.body.contact_number || "").trim(),
+      contact_number: String(req.body.contact_number || "").trim(),
       course: req.body.course,
       year_level: req.body.year_level,
       gender: req.body.gender,
@@ -370,7 +369,7 @@ app.put("/api/students/:id", (req, res) => {
       first_name: req.body.first_name.trim(),
       last_name: req.body.last_name.trim(),
       email: req.body.email.trim().toLowerCase(),
-      contact_number: (req.body.contact_number || "").trim(),
+      contact_number: String(req.body.contact_number || "").trim(),
       course: req.body.course,
       year_level: req.body.year_level,
       gender: req.body.gender,
@@ -456,7 +455,11 @@ app.use("/api", (req, res) => {
 // ========================================
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"), err => {
+    if (err) {
+      res.status(404).send("StudentHub frontend is not installed on this service.");
+    }
+  });
 });
 
 // ========================================
